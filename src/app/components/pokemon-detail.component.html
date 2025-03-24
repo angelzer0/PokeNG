@@ -1,0 +1,43 @@
+<div class="detail" *ngIf="!loading && details">
+  <button class="close-btn" (click)="close.emit()">×</button>
+
+  <h2>{{ details.name | titlecase }} <span>#{{ details.id }}</span></h2>
+
+  <div class="info">
+    <img [src]="details.sprites.other['official-artwork'].front_default" [alt]="details.name" />
+
+    <p class="description">{{ description }}</p>
+
+    <div class="attributes">
+      <p><strong>Height:</strong> {{ details.height / 10 }} m</p>
+      <p><strong>Weight:</strong> {{ details.weight / 10 }} kg</p>
+    </div>
+
+    <div class="types">
+      <span *ngFor="let t of details.types" class="type">{{ t.type.name }}</span>
+    </div>
+
+    <div class="abilities">
+      <strong>Abilities:</strong>
+      <ul>
+        <li *ngFor="let a of details.abilities">{{ a.ability.name }}</li>
+      </ul>
+    </div>
+
+    <div class="sprites">
+      <img *ngIf="details.sprites.front_default" [src]="details.sprites.front_default" alt="Front" />
+      <img *ngIf="details.sprites.back_default" [src]="details.sprites.back_default" alt="Back" />
+      <img *ngIf="details.sprites.front_shiny" [src]="details.sprites.front_shiny" alt="Shiny Front" />
+      <img *ngIf="details.sprites.back_shiny" [src]="details.sprites.back_shiny" alt="Shiny Back" />
+    </div>
+
+    <div class="stats">
+      <div *ngFor="let s of details.stats" class="stat">
+        <span>{{ s.stat.name }}</span>
+        <div class="bar">
+          <div class="value" [style.width.%]="s.base_stat / 2">{{ s.base_stat }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

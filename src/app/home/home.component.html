@@ -1,0 +1,40 @@
+<div class="container">
+  <h1>Pokédex</h1>
+
+  <div class="search-bar">
+    <div class="search-wrapper">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M21 21l-4.35-4.35m1.36-5.33a6 6 0 11-12 0 6 6 0 0112 0z" />
+      </svg>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="search()"
+        placeholder="Buscar Pokémon"
+      />
+    </div>
+  </div>
+
+
+  <div class="pokemon-grid">
+    <app-pokemon-card
+      *ngFor="let p of filteredList"
+      [name]="p.name"
+      [url]="p.url"
+      (select)="selectPokemon($event)"
+    ></app-pokemon-card>
+  </div>
+
+  <app-pokemon-detail
+    *ngIf="selectedPokemon"
+    [pokemonName]="selectedPokemon"
+    (close)="selectedPokemon = null"
+  ></app-pokemon-detail>
+
+  <div class="pagination">
+    <button (click)="prevPage()">Anterior</button>
+    <button (click)="nextPage()">Siguiente</button>
+  </div>
+</div>
