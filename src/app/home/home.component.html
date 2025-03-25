@@ -1,24 +1,41 @@
 <div class="container">
   <h1>PokeNG</h1>
 
-  <!-- Búsqueda -->
-  <div class="search-bar">
+  <div class="search-bar centered">
     <div class="search-wrapper">
-      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M21 21l-4.35-4.35m1.36-5.33a6 6 0 11-12 0 6 6 0 0112 0z" />
+      <svg
+        class="search-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M21 21l-4.35-4.35m1.36-5.33a6 6 0 11-12 0 6 6 0 0112 0z"
+        />
       </svg>
       <input
         type="text"
         [(ngModel)]="searchTerm"
         (ngModelChange)="search()"
-        placeholder="Buscar Pokémon"
+        placeholder="Search Pokémon..."
       />
     </div>
   </div>
 
-  <!-- Grid de Pokémon -->
-  <div class="pokemon-grid">
+  <div class="view-toggle">
+    <button (click)="setView('grid')" [class.active]="viewMode === 'grid'">
+      Grid View
+    </button>
+    <button (click)="setView('list')" [class.active]="viewMode === 'list'">
+      List View
+    </button>
+  </div>
+
+  <div class="pokemon-grid" *ngIf="viewMode === 'grid'">
     <a
       *ngFor="let p of currentPageItems"
       [routerLink]="['/pokemon', p.name]"
@@ -27,23 +44,61 @@
       <app-pokemon-card
         [name]="p.name"
         [url]="p.url"
+        [minimal]="false"
       ></app-pokemon-card>
     </a>
   </div>
 
-  <!-- Paginación -->
+  <div class="pokemon-list" *ngIf="viewMode === 'list'">
+    <a
+      *ngFor="let p of currentPageItems"
+      [routerLink]="['/pokemon', p.name]"
+      class="card-link"
+    >
+      <app-pokemon-card
+        [name]="p.name"
+        [url]="p.url"
+        [minimal]="true"
+      ></app-pokemon-card>
+    </a>
+  </div>
+
   <div class="pagination">
     <button (click)="prevPage()" [disabled]="currentPage === 1">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        width="20"
+        height="20"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"
+        />
       </svg>
       Previous
     </button>
 
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">
       Next
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        width="20"
+        height="20"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"
+        />
       </svg>
     </button>
   </div>

@@ -1,4 +1,3 @@
-// src/app/components/pokemon-card/pokemon-card.component.ts
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -14,6 +13,7 @@ import { PokemonDetails } from '../../models/pokemon.model';
 export class PokemonCardComponent implements OnInit {
   @Input() name!: string;
   @Input() url!: string;
+  @Input() minimal: boolean = false; // 👈 NUEVO
   @Output() select = new EventEmitter<string>();
 
   details?: PokemonDetails;

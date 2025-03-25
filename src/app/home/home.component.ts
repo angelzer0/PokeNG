@@ -1,22 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { PokemonService } from '../../services/pokemon.service';
 import { PokemonCardComponent } from '../components/pokemon-card.component';
 import { Pokemon } from '../../models/pokemon.model';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router'; // 👈 necesario para routerLink
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    PokemonCardComponent,
-    RouterModule // 👈 importado para usar routerLink en el HTML
-  ],
+  imports: [CommonModule, FormsModule, PokemonCardComponent, RouterModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   allPokemon: Pokemon[] = [];
@@ -25,8 +20,9 @@ export class HomeComponent implements OnInit {
 
   limit: number = 20;
   currentPage: number = 1;
-
   loading = true;
+
+  viewMode: 'grid' | 'list' = 'grid';
 
   constructor(private pokemonService: PokemonService) {}
 
@@ -36,7 +32,7 @@ export class HomeComponent implements OnInit {
 
   loadAllPokemonNames() {
     this.loading = true;
-    this.pokemonService.getPokemonList(0, 2000).subscribe(data => {
+    this.pokemonService.getPokemonList(0, 2000).subscribe((data) => {
       this.allPokemon = data.results;
       this.filteredList = data.results;
       this.loading = false;
@@ -47,11 +43,10 @@ export class HomeComponent implements OnInit {
     this.currentPage = 1;
     const term = this.searchTerm.trim().toLowerCase();
 
-    this.filteredList = term === ''
-      ? this.allPokemon
-      : this.allPokemon.filter(p =>
-          p.name.toLowerCase().includes(term)
-        );
+    this.filteredList =
+      term === ''
+        ? this.allPokemon
+        : this.allPokemon.filter((p) => p.name.toLowerCase().includes(term));
   }
 
   get currentPageItems(): Pokemon[] {
@@ -74,5 +69,9 @@ export class HomeComponent implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
+  }
+
+  setView(mode: 'grid' | 'list') {
+    this.viewMode = mode;
   }
 }

@@ -1,28 +1,37 @@
-<div class="card" (click)="onClick()">
-  <ng-container *ngIf="details; else loadingTpl">
-    <div class="card-top">
-      <img
-        [src]="details.sprites.front_default"
-        [alt]="name"
-        class="sprite"
-      />
+<!-- Vista GRID -->
+<div class="card" *ngIf="!minimal && details">
+  <div class="card-top">
+    <img class="sprite" [src]="details.sprites.front_default" [alt]="details.name" />
+  </div>
+  <div class="card-bottom">
+    <h3>{{ name | titlecase }}</h3>
+    <div class="card-id">#{{ details.id | number: '3.0' }}</div>
+    <div class="types">
+      <span
+        *ngFor="let t of details.types"
+        class="type"
+        [ngStyle]="{ backgroundColor: typeColors[t.type.name] }"
+      >
+        {{ t.type.name }}
+      </span>
     </div>
-    <div class="card-bottom">
-      <h3>{{ name | titlecase }}</h3>
-      <div class="card-id">#{{ details.id | number: '3.0' }}</div>
-      <div class="types">
-        <span
-          *ngFor="let t of details.types"
-          class="type"
-          [ngStyle]="{ backgroundColor: typeColors[t.type.name] || '#aaa' }"
-        >
-          {{ t.type.name }}
-        </span>
-      </div>
-    </div>
-  </ng-container>
+  </div>
+</div>
 
-  <ng-template #loadingTpl>
-    <div class="card-loading">Cargando...</div>
-  </ng-template>
+<!-- Vista LISTA (minimal) -->
+<div class="list-mini" *ngIf="minimal && details">
+  <img class="sprite-mini" [src]="details.sprites.front_default" [alt]="details.name" />
+  <div class="info-mini">
+    <h3>{{ name | titlecase }}</h3>
+    <p>#{{ details.id }}</p>
+    <div class="types">
+      <span
+        *ngFor="let t of details.types"
+        class="type"
+        [ngStyle]="{ backgroundColor: typeColors[t.type.name] }"
+      >
+        {{ t.type.name }}
+      </span>
+    </div>
+  </div>
 </div>
