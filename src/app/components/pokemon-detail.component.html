@@ -1,41 +1,92 @@
-<div class="detail" *ngIf="!loading && details">
-  <button class="close-btn" (click)="close.emit()">×</button>
+<div class="detail-container" *ngIf="!loading && details">
+  <!-- Header de navegación -->
+  <div class="detail-header">
+    <a routerLink="/" class="back-link">← Back to list</a>
+    <h1>PokeNG</h1>
+  </div>
 
-  <h2>{{ details.name | titlecase }} <span>#{{ details.id }}</span></h2>
-
-  <div class="info">
-    <img [src]="details.sprites.other['official-artwork'].front_default" [alt]="details.name" />
-
-    <p class="description">{{ description }}</p>
-
-    <div class="attributes">
-      <p><strong>Height:</strong> {{ details.height / 10 }} m</p>
-      <p><strong>Weight:</strong> {{ details.weight / 10 }} kg</p>
+  <!-- Main -->
+  <div class="detail-card">
+    <div class="detail-header">
+      <div class="name-section">
+        <h2>{{ details.name | titlecase }}</h2>
+        <div class="genus">
+          {{ speciesGenus }}
+        </div>
+      </div>
+      <div class="detail-id">#{{ details.id | number:'3.0' }}</div>
     </div>
 
-    <div class="types">
-      <span *ngFor="let t of details.types" class="type">{{ t.type.name }}</span>
-    </div>
+    <div class="detail-content">
+      <!-- Izquierda: Imagen y tipos -->
+      <div class="image-side">
+        <img [src]="details.sprites.other['official-artwork'].front_default" [alt]="details.name" />
+        <div class="type-badges">
+          <span
+            *ngFor="let t of details.types"
+            class="type-badge"
+            [ngClass]="t.type.name"
+          >
+            {{ t.type.name }}
+          </span>
+        </div>
+      </div>
 
-    <div class="abilities">
-      <strong>Abilities:</strong>
-      <ul>
-        <li *ngFor="let a of details.abilities">{{ a.ability.name }}</li>
-      </ul>
-    </div>
+      <!-- Derecha: descripción, datos, tabs -->
+      <div class="info-side">
+        <p class="description">{{ description }}</p>
 
-    <div class="sprites">
-      <img *ngIf="details.sprites.front_default" [src]="details.sprites.front_default" alt="Front" />
-      <img *ngIf="details.sprites.back_default" [src]="details.sprites.back_default" alt="Back" />
-      <img *ngIf="details.sprites.front_shiny" [src]="details.sprites.front_shiny" alt="Shiny Front" />
-      <img *ngIf="details.sprites.back_shiny" [src]="details.sprites.back_shiny" alt="Shiny Back" />
-    </div>
+        <!-- Tabs -->
+        <div class="tabs">
+          <button (click)="activeTab = 'about'" [class.active]="activeTab === 'about'">About</button>
+          <button (click)="activeTab = 'stats'" [class.active]="activeTab === 'stats'">Base Stats</button>
+        </div>
 
-    <div class="stats">
-      <div *ngFor="let s of details.stats" class="stat">
-        <span>{{ s.stat.name }}</span>
-        <div class="bar">
-          <div class="value" [style.width.%]="s.base_stat / 2">{{ s.base_stat }}</div>
+        <!-- TAB: About -->
+        <div *ngIf="activeTab === 'about'">
+          <div class="info-grid">
+            <div><strong>Height:</strong> {{ details.height / 10 }} m</div>
+            <div><strong>Weight:</strong> {{ details.weight / 10 }} kg</div>
+          </div>
+
+          <div class="abilities">
+            <strong>Abilities:</strong>
+            <div class="ability-badges">
+              <span
+                *ngFor="let a of details.abilities"
+                class="ability"
+                [class.hidden]="a.is_hidden"
+              >
+                {{ a.ability.name | titlecase }}
+                <span *ngIf="a.is_hidden">(Hidden)</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="sprites">
+            <div class="sprite-box" *ngIf="details.sprites.front_default">
+              <img [src]="details.sprites.front_default" alt="Front" />
+            </div>
+            <div class="sprite-box" *ngIf="details.sprites.back_default">
+              <img [src]="details.sprites.back_default" alt="Back" />
+            </div>
+            <div class="sprite-box" *ngIf="details.sprites.front_shiny">
+              <img [src]="details.sprites.front_shiny" alt="Shiny Front" />
+            </div>
+            <div class="sprite-box" *ngIf="details.sprites.back_shiny">
+              <img [src]="details.sprites.back_shiny" alt="Shiny Back" />
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: Stats -->
+        <div *ngIf="activeTab === 'stats'" class="stats">
+          <div class="stat" *ngFor="let s of details.stats">
+            <div class="stat-label">{{ s.stat.name | titlecase }}: {{ s.base_stat }}</div>
+            <div class="stat-bar">
+              <div class="stat-fill" [style.width.%]="s.base_stat / 2"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -27,40 +27,66 @@ h1 {
 
 .pokemon-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 👈 fuerza 4 columnas */
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  justify-content: center; /* centra el contenido horizontal */
 }
 
+/* Estilos para <a> que envuelve la tarjeta */
+.card-link {
+  text-decoration: none !important;
+  color: inherit !important;
+  display: block;
+}
+
+/* Asegura que ningún elemento dentro herede estilos de enlace */
+.card-link *,
+.card-link h3,
+.card-link p,
+.card-link span {
+  color: inherit !important;
+  text-decoration: none !important;
+}
 
 .pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 30px;
 }
 
 .pagination button {
-  margin: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding: 8px 16px;
   font-size: 14px;
-  border-radius: 6px;
-  border: none;
-  background-color: #eee;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #fff;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .pagination button:hover {
-  background-color: #ddd;
+  background-color: #f3f3f3;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .search-wrapper {
   position: relative;
   display: inline-block;
-  width: 360px; /* ⬅️ más larga */
+  width: 360px;
 }
 
 .search-wrapper input {
   width: 100%;
-  padding: 12px 16px 12px 40px; /* ⬅️ más alto y con más espacio para el icono */
+  padding: 12px 16px 12px 40px;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 8px;

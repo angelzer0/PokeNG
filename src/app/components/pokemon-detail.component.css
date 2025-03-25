@@ -1,94 +1,201 @@
-.detail {
-  position: relative;
-  padding: 20px;
-  max-width: 600px;
-  margin: 40px auto;
-  background: #fdfdfd;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.detail-container {
+  max-width: 1200px;
+  margin: 48px auto;
+  padding: 24px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 14px;
-  font-size: 24px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #999;
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #374151;
+  text-decoration: none;
+  margin-bottom: 16px;
 }
 
-.detail h2 {
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.name-section {
+  flex: 1;
+}
+
+.name-section h2 {
+  font-size: 32px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.genus {
+  font-size: 16px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.detail-id {
+  font-size: 20px;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.detail-content {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.image-side {
+  flex: 1;
   text-align: center;
-  margin-bottom: 20px;
 }
 
-.detail h2 span {
-  font-size: 0.8em;
-  color: #666;
+.image-side img {
+  width: 300px;
+  max-width: 100%;
+  height: auto;
 }
 
-.info {
-  text-align: center;
+.type-badges {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.type-badge {
+  background: #d1d5db;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  text-transform: lowercase;
+}
+
+.info-side {
+  flex: 1;
 }
 
 .description {
-  font-style: italic;
-  margin: 10px 0;
-  color: #444;
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 16px;
 }
 
-.attributes {
+.tabs {
   display: flex;
-  justify-content: space-around;
-  margin: 10px 0;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
 }
 
-.types {
-  margin: 10px 0;
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  font-weight: 500;
+  background: #f9fafb;
+  border: none;
+  cursor: pointer;
 }
 
-.type {
-  background: #ccc;
-  color: white;
+.tabs button.active {
+  background: white;
+  font-weight: 600;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-size: 14px;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.abilities {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.ability-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ability {
   padding: 4px 10px;
-  border-radius: 12px;
-  margin: 0 5px;
-  display: inline-block;
+  border-radius: 9999px;
   font-size: 12px;
+  background: #f3f4f6;
+  color: #111827;
 }
 
-.abilities ul {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0;
+.ability.hidden {
+  font-style: italic;
+  opacity: 0.7;
 }
 
-.sprites img {
-  width: 64px;
-  height: 64px;
-  margin: 5px;
+.sprites {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
-.stats .stat {
-  margin-top: 10px;
-  text-align: left;
+.sprite-box {
+  background: #f9fafb;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.bar {
-  background: #eee;
-  height: 20px;
-  border-radius: 10px;
+.sprite-box img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+/* Base stats */
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat {
+  font-size: 14px;
+}
+
+.stat-label {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.stat-bar {
+  background: #e5e7eb;
+  height: 8px;
+  border-radius: 9999px;
   overflow: hidden;
 }
 
-.value {
-  background: #4caf50;
+.stat-fill {
   height: 100%;
-  color: white;
-  padding-left: 6px;
-  font-size: 12px;
-  line-height: 20px;
+  background: #3b82f6;
 }

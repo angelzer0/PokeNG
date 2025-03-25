@@ -4,60 +4,75 @@ import { PokemonService } from '../../services/pokemon.service';
 import { PokemonCardComponent } from '../components/pokemon-card.component';
 import { Pokemon } from '../../models/pokemon.model';
 import { FormsModule } from '@angular/forms';
-import { PokemonDetailComponent } from '../components/pokemon-detail.component';
-
+import { RouterModule } from '@angular/router'; // 👈 necesario para routerLink
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, PokemonCardComponent, FormsModule, PokemonDetailComponent ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    PokemonCardComponent,
+    RouterModule // 👈 importado para usar routerLink en el HTML
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  pokemonList: Pokemon[] = [];
+  allPokemon: Pokemon[] = [];
   filteredList: Pokemon[] = [];
   searchTerm: string = '';
-  offset: number = 0;
+
   limit: number = 20;
+  currentPage: number = 1;
 
   loading = true;
-  selectedPokemon: string | null = null;
 
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit(): void {
-    this.fetchPokemon();
+    this.loadAllPokemonNames();
   }
 
-  fetchPokemon() {
+  loadAllPokemonNames() {
     this.loading = true;
-    this.pokemonService.getPokemonList(this.offset, this.limit).subscribe(data => {
-      this.pokemonList = data.results;
+    this.pokemonService.getPokemonList(0, 2000).subscribe(data => {
+      this.allPokemon = data.results;
       this.filteredList = data.results;
       this.loading = false;
     });
   }
 
   search() {
-    this.filteredList = this.pokemonList.filter(p =>
-      p.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    this.currentPage = 1;
+    const term = this.searchTerm.trim().toLowerCase();
+
+    this.filteredList = term === ''
+      ? this.allPokemon
+      : this.allPokemon.filter(p =>
+          p.name.toLowerCase().includes(term)
+        );
+  }
+
+  get currentPageItems(): Pokemon[] {
+    const start = (this.currentPage - 1) * this.limit;
+    const end = this.currentPage * this.limit;
+    return this.filteredList.slice(start, end);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredList.length / this.limit);
   }
 
   nextPage() {
-    this.offset += this.limit;
-    this.fetchPokemon();
-  }
-
-  prevPage() {
-    if (this.offset > 0) {
-      this.offset -= this.limit;
-      this.fetchPokemon();
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
     }
   }
 
-  selectPokemon(name: string) {
-    this.selectedPokemon = name;
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
   }
 }
