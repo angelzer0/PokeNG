@@ -1,40 +1,47 @@
 <div class="container">
-  <h1>PokeNG</h1>
+  <!-- TÍTULO -->
+  <h1 class="main-title">PokeNG</h1>
 
-  <div class="search-bar centered">
-    <div class="search-wrapper">
-      <svg
-        class="search-icon"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M21 21l-4.35-4.35m1.36-5.33a6 6 0 11-12 0 6 6 0 0112 0z"
+  <!-- TOGGLE + SEARCH en la misma fila -->
+  <div class="header-actions">
+    <!-- TOGGLE -->
+    <div class="view-toggle">
+      <button (click)="setView('grid')" [class.active]="viewMode === 'grid'">
+        Grid View
+      </button>
+      <button (click)="setView('list')" [class.active]="viewMode === 'list'">
+        List View
+      </button>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+      <div class="search-wrapper">
+        <svg
+          class="search-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-4.35-4.35m1.36-5.33a6 6 0 11-12 0 6 6 0 0112 0z"
+          />
+        </svg>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="search()"
+          placeholder="Search Pokémon..."
         />
-      </svg>
-      <input
-        type="text"
-        [(ngModel)]="searchTerm"
-        (ngModelChange)="search()"
-        placeholder="Search Pokémon..."
-      />
+      </div>
     </div>
   </div>
 
-  <div class="view-toggle">
-    <button (click)="setView('grid')" [class.active]="viewMode === 'grid'">
-      Grid View
-    </button>
-    <button (click)="setView('list')" [class.active]="viewMode === 'list'">
-      List View
-    </button>
-  </div>
-
+  <!-- GRID -->
   <div class="pokemon-grid" *ngIf="viewMode === 'grid'">
     <a
       *ngFor="let p of currentPageItems"
@@ -49,6 +56,7 @@
     </a>
   </div>
 
+  <!-- LIST -->
   <div class="pokemon-list" *ngIf="viewMode === 'list'">
     <a
       *ngFor="let p of currentPageItems"
@@ -63,6 +71,7 @@
     </a>
   </div>
 
+  <!-- PAGINACIÓN -->
   <div class="pagination">
     <button (click)="prevPage()" [disabled]="currentPage === 1">
       <svg

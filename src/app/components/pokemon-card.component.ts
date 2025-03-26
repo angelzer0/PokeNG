@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { PokemonDetails } from '../../models/pokemon.model';
+import { typeColors } from '../utils/type-colors';
 
 @Component({
   selector: 'app-pokemon-card',
@@ -13,32 +14,13 @@ import { PokemonDetails } from '../../models/pokemon.model';
 export class PokemonCardComponent implements OnInit {
   @Input() name!: string;
   @Input() url!: string;
-  @Input() minimal: boolean = false; // 👈 NUEVO
+  @Input() minimal: boolean = false;
   @Output() select = new EventEmitter<string>();
 
   details?: PokemonDetails;
   loading = true;
 
-  typeColors: Record<string, string> = {
-    normal:   "#a8a29e",
-    fire:     "#f97316",
-    water:    "#3b82f6",
-    electric: "#facc15",
-    grass:    "#22c55e",
-    ice:      "#67e8f9",
-    fighting: "#b91c1c",
-    poison:   "#a855f7",
-    ground:   "#d97706",
-    flying:   "#a5b4fc",
-    psychic:  "#ec4899",
-    bug:      "#84cc16",
-    rock:     "#a16207",
-    ghost:    "#6b21a8",
-    dragon:   "#4338ca",
-    dark:     "#57534e",
-    steel:    "#94a3b8",
-    fairy:    "#f9a8d4",
-  };
+  typeColors = typeColors;
 
   constructor(private http: HttpClient) {}
 

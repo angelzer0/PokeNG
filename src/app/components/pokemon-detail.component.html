@@ -1,91 +1,96 @@
+<h1 class="main-title">PokeNG</h1>
+
+<a routerLink="/" class="back-link">← Back to list</a>
+
 <div class="detail-container" *ngIf="!loading && details">
-  <!-- Header de navegación -->
   <div class="detail-header">
-    <a routerLink="/" class="back-link">← Back to list</a>
-    <h1>PokeNG</h1>
+    <div class="name-section">
+      <h2>{{ details.name | titlecase }}</h2>
+      <div class="genus">
+        {{ speciesGenus }}
+      </div>
+    </div>
+    <div class="detail-id">#{{ details.id | number : "3.0" }}</div>
   </div>
 
-  <!-- Main -->
-  <div class="detail-card">
-    <div class="detail-header">
-      <div class="name-section">
-        <h2>{{ details.name | titlecase }}</h2>
-        <div class="genus">
-          {{ speciesGenus }}
-        </div>
+  <div class="detail-content">
+    <div class="image-side">
+      <img
+        [src]="details.sprites.other['official-artwork'].front_default"
+        [alt]="details.name"
+      />
+      <div class="type-badges">
+        <span
+          *ngFor="let t of details.types"
+          class="type-badge"
+          [ngStyle]="{ backgroundColor: typeColors[t.type.name] }"
+        >
+          {{ t.type.name }}
+        </span>
       </div>
-      <div class="detail-id">#{{ details.id | number:'3.0' }}</div>
     </div>
 
-    <div class="detail-content">
-      <!-- Izquierda: Imagen y tipos -->
-      <div class="image-side">
-        <img [src]="details.sprites.other['official-artwork'].front_default" [alt]="details.name" />
-        <div class="type-badges">
-          <span
-            *ngFor="let t of details.types"
-            class="type-badge"
-            [ngClass]="t.type.name"
-          >
-            {{ t.type.name }}
-          </span>
+    <div class="info-side">
+      <p class="description">{{ description }}</p>
+
+      <div class="tabs">
+        <button
+          (click)="activeTab = 'about'"
+          [class.active]="activeTab === 'about'"
+        >
+          About
+        </button>
+        <button
+          (click)="activeTab = 'stats'"
+          [class.active]="activeTab === 'stats'"
+        >
+          Base Stats
+        </button>
+      </div>
+
+      <div *ngIf="activeTab === 'about'">
+        <div class="info-grid">
+          <div><strong>Height:</strong> {{ details.height / 10 }} m</div>
+          <div><strong>Weight:</strong> {{ details.weight / 10 }} kg</div>
+        </div>
+
+        <div class="abilities">
+          <strong>Abilities:</strong>
+          <div class="ability-badges">
+            <span
+              *ngFor="let a of details.abilities"
+              class="ability"
+              [class.hidden]="a.is_hidden"
+            >
+              {{ a.ability.name | titlecase }}
+              <span *ngIf="a.is_hidden">(Hidden)</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="sprites">
+          <div class="sprite-box" *ngIf="details.sprites.front_default">
+            <img [src]="details.sprites.front_default" alt="Front" />
+          </div>
+          <div class="sprite-box" *ngIf="details.sprites.back_default">
+            <img [src]="details.sprites.back_default" alt="Back" />
+          </div>
+          <div class="sprite-box" *ngIf="details.sprites.front_shiny">
+            <img [src]="details.sprites.front_shiny" alt="Shiny Front" />
+          </div>
+          <div class="sprite-box" *ngIf="details.sprites.back_shiny">
+            <img [src]="details.sprites.back_shiny" alt="Shiny Back" />
+          </div>
         </div>
       </div>
 
-      <!-- Derecha: descripción, datos, tabs -->
-      <div class="info-side">
-        <p class="description">{{ description }}</p>
-
-        <!-- Tabs -->
-        <div class="tabs">
-          <button (click)="activeTab = 'about'" [class.active]="activeTab === 'about'">About</button>
-          <button (click)="activeTab = 'stats'" [class.active]="activeTab === 'stats'">Base Stats</button>
-        </div>
-
-        <!-- TAB: About -->
-        <div *ngIf="activeTab === 'about'">
-          <div class="info-grid">
-            <div><strong>Height:</strong> {{ details.height / 10 }} m</div>
-            <div><strong>Weight:</strong> {{ details.weight / 10 }} kg</div>
+      <div *ngIf="activeTab === 'stats'" class="stats">
+        <div class="stat" *ngFor="let s of details.stats">
+          <div class="stat-label">
+            {{ s.stat.name | titlecase }}: {{ s.base_stat }}
           </div>
-
-          <div class="abilities">
-            <strong>Abilities:</strong>
-            <div class="ability-badges">
-              <span
-                *ngFor="let a of details.abilities"
-                class="ability"
-                [class.hidden]="a.is_hidden"
-              >
-                {{ a.ability.name | titlecase }}
-                <span *ngIf="a.is_hidden">(Hidden)</span>
-              </span>
-            </div>
-          </div>
-
-          <div class="sprites">
-            <div class="sprite-box" *ngIf="details.sprites.front_default">
-              <img [src]="details.sprites.front_default" alt="Front" />
-            </div>
-            <div class="sprite-box" *ngIf="details.sprites.back_default">
-              <img [src]="details.sprites.back_default" alt="Back" />
-            </div>
-            <div class="sprite-box" *ngIf="details.sprites.front_shiny">
-              <img [src]="details.sprites.front_shiny" alt="Shiny Front" />
-            </div>
-            <div class="sprite-box" *ngIf="details.sprites.back_shiny">
-              <img [src]="details.sprites.back_shiny" alt="Shiny Back" />
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB: Stats -->
-        <div *ngIf="activeTab === 'stats'" class="stats">
-          <div class="stat" *ngFor="let s of details.stats">
-            <div class="stat-label">{{ s.stat.name | titlecase }}: {{ s.base_stat }}</div>
-            <div class="stat-bar">
-              <div class="stat-fill" [style.width.%]="s.base_stat / 2"></div>
-            </div>
+          <div class="stat-bar">
+            <div class="stat-fill" [style.width.%]="s.base_stat / 2"></div>
           </div>
         </div>
       </div>

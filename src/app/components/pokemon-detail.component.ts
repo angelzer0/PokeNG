@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { PokemonDetails } from '../../models/pokemon.model';
 import { RouterModule } from '@angular/router';
+import { typeColors } from '../utils/type-colors';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -20,6 +21,7 @@ export class PokemonDetailComponent implements OnInit {
   description = '';
   speciesGenus = '';
   loading = true;
+  typeColors = typeColors;
 
   activeTab: 'about' | 'stats' = 'about';
 
